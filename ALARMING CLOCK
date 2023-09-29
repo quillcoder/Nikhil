@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Alarm Clock</title>
+</head>
+<body>
+    <div class="clock">
+        <div class="time">
+            <span id="hour">00</span>:<span id="minute">00</span>:<span id="second">00</span>
+        </div>
+        <div class="controls">
+            <input type="time" id="alarmTime">
+            <button id="setAlarm">Set Alarm</button>
+        </div>
+        <button id="clearAlarm">Clear Alarm</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
+CSS CODE - styles.css
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f0f0f0;
+}
+
+.clock {
+    background-color: #ffffff;
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.time {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.controls {
+    margin-top: 20px;
+}
+
+input[type="time"] {
+    font-size: 18px;
+    padding: 5px;
+}
+
+button {
+    font-size: 18px;
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    background-color: #cc00ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #8600b3;
+}
+
+Javascript - script.js
+
+// Get references to HTML elements
+const hourDisplay = document.getElementById("hour");
+const minuteDisplay = document.getElementById("minute");
+const secondDisplay = document.getElementById("second");
+const alarmTimeInput = document.getElementById("alarmTime");
+const setAlarmButton = document.getElementById("setAlarm");
+const clearAlarmButton = document.getElementById("clearAlarm");
+
+let alarmInterval;
+
+// Function to update the clock display
+function updateClockDisplay() {
+    const now = new Date();
+    const hour = now.getHours().toString().padStart(2, "0");
+    const minute = now.getMinutes().toString().padStart(2, "0");
+    const second = now.getSeconds().toString().padStart(2, "0");
+
+    hourDisplay.textContent = hour;
+    minuteDisplay.textContent = minute;
+    secondDisplay.textContent = second;
+}
+
+// Function to check and trigger the alarm
+function checkAlarm() {
+    const now = new Date();
+    const alarmTime = new Date(alarmTimeInput.value);
+
+    if (now.getHours() === alarmTime.getHours() && now.getMinutes() === alarmTime.getMinutes()) {
+        alert("Alarm! Wake up its NINJA TIME!");
+        clearInterval(alarmInterval);
+    }
+}
+
+// Set Alarm button click event
+setAlarmButton.addEventListener("click", function () {
+    clearInterval(alarmInterval);
+    alarmInterval = setInterval(checkAlarm, 1000);
+});
+
+// Clear Alarm button click event
+clearAlarmButton.addEventListener("click", function () {
+    clearInterval(alarmInterval);
+    alarmTimeInput.value = "";
+});
+
+// Initial display
+updateClockDisplay();
+setInterval(updateClockDisplay, 1000);
+
